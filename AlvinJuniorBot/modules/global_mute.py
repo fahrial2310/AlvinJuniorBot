@@ -8,16 +8,16 @@ from telegram.error import BadRequest, TelegramError
 from telegram.ext import run_async, CommandHandler, MessageHandler, Filters
 from telegram.utils.helpers import mention_html
 
-import SaitamaRobot.modules.sql.global_mutes_sql as sql
-from SaitamaRobot import dispatcher, OWNER_ID, DEV_USERS,DRAGONS,DEMONS, TIGERS,STRICT_GMUTE
-from SaitamaRobot.modules.helper_funcs.chat_status import user_admin, is_user_admin
-from SaitamaRobot.modules.helper_funcs.extraction import extract_user, extract_user_and_text
-from SaitamaRobot.modules.helper_funcs.filters import CustomFilters
-from SaitamaRobot.modules.sql.users_sql import get_all_chats
+import AlvinJuniorBot.modules.sql.global_mutes_sql as sql
+from AlvinJuniorBot import dispatcher, OWNER_ID, DEV_USERS,SUDO_USERS ,SUPPORT_USERS , TIGERS,STRICT_GMUTE
+from AlvinJuniorBot.modules.helper_funcs.chat_status import user_admin, is_user_admin
+from AlvinJuniorBot.modules.helper_funcs.extraction import extract_user, extract_user_and_text
+from AlvinJuniorBot.modules.helper_funcs.filters import CustomFilters
+from AlvinJuniorBot.modules.sql.users_sql import get_all_chats
 
 GMUTE_ENFORCE_GROUP = 6
 
-OFFICERS = [OWNER_ID] + DEV_USERS + DRAGONS + DEMONS + TIGERS
+OFFICERS = [OWNER_ID] + DEV_USERS + SUDO_USERS  + SUPPORT_USERS  + TIGERS
 
 
 ERROR_DUMP = None
