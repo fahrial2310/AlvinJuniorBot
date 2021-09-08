@@ -3,19 +3,19 @@ from typing import Optional, List
 
 from telegram import Message, Chat, Update, User, ChatPermissions
 
-from SaitamaRobot import TIGERS, WOLVES, dispatcher
-from SaitamaRobot.modules.helper_funcs.chat_status import (bot_admin,
+from AlvinJuniorBot import TIGERS, WHITELIST_USERS , dispatcher
+from AlvinJuniorBot.modules.helper_funcs.chat_status import (bot_admin,
                                                            is_user_admin,
                                                            user_admin,
                                                            user_admin_no_reply)
-from SaitamaRobot.modules.log_channel import loggable
-from SaitamaRobot.modules.sql import antiflood_sql as sql
+from AlvinJuniorBot.modules.log_channel import loggable
+from AlvinJuniorBot.modules.sql import antiflood_sql as sql
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler, Filters, MessageHandler, run_async
 from telegram.utils.helpers import mention_html, escape_markdown
-from SaitamaRobot.modules.helper_funcs.string_handling import extract_time
-from SaitamaRobot.modules.connection import connected
-from SaitamaRobot.modules.helper_funcs.alternate import send_message
+from AlvinJuniorBot.modules.helper_funcs.string_handling import extract_time
+from AlvinJuniorBot.modules.connection import connected
+from AlvinJuniorBot.modules.helper_funcs.alternate import send_message
 FLOOD_GROUP = 3
 
 
@@ -29,7 +29,7 @@ def check_flood(update, context) -> str:
         return ""
 
     # ignore admins and whitelists
-    if (is_user_admin(chat, user.id) or user.id in WOLVES or user.id in TIGERS):
+    if (is_user_admin(chat, user.id) or user.id in WHITELIST_USERS  or user.id in TIGERS):
         sql.update_flood(chat.id, None)
         return ""
 
@@ -70,7 +70,7 @@ def check_flood(update, context) -> str:
             execstrings = ("Muted for {}".format(getvalue))
             tag = "TMUTE"
         send_message(update.effective_message,
-                     "Beep Boop! Boop Beep!\n{}!".format(execstrings))
+                     "heyya,you are!\n{}!".format(execstrings))
 
         return "<b>{}:</b>" \
                "\n#{}" \
