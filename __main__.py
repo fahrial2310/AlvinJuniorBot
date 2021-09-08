@@ -4,15 +4,15 @@ import re
 from sys import argv
 from typing import Optional
 
-from SaitamaRobot import (ALLOW_EXCL, CERT_PATH, DONATION_LINK, LOGGER,
-                          OWNER_ID, PORT, SUPPORT_CHAT, TOKEN, URL, WEBHOOK,
+from AlvinJuniorBot import (ALLOW_EXCL, CERT_PATH, DONATION_LINK, LOGGER,
+                          OWNER_ID, PORT, SUPPORT_CHAT,UPDATES_CHANNEL,BOT_USERNAME, TOKEN, URL, WEBHOOK,
                           SUPPORT_CHAT, dispatcher, StartTime, telethn, updater,pbot)
 # needed to dynamically load modules
 # NOTE: Module order is not guaranteed, specify that in the config file!
-from SaitamaRobot.modules import ALL_MODULES
-from SaitamaRobot.modules.helper_funcs.chat_status import is_user_admin
-from SaitamaRobot.modules.helper_funcs.misc import paginate_modules
-import SaitamaRobot.modules.sql.users_sql as sql
+from AlvinJuniorBot.modules import ALL_MODULES
+from AlvinJuniorBot.modules.helper_funcs.chat_status import is_user_admin
+from AlvinJuniorBot.modules.helper_funcs.misc import paginate_modules
+import AlvinJuniorBot.modules.sql.users_sql as sql
 from telegram import (InlineKeyboardButton, InlineKeyboardMarkup, ParseMode,
                       Update)
 from telegram.error import (BadRequest, ChatMigrated, NetworkError,
@@ -52,19 +52,16 @@ def get_readable_time(seconds: int) -> str:
 
 
 PM_START_TEXT = """
-*Eureka! {}, myself {}!* 
-*An Anime themed group management bot from* [Steins;Gate](https://anilist.co/anime/9253)!!
+*hello! [{}](tg://user?id={}), my name is {}!* 
+*the bot of group management can build a group into supergroup\n\nsend /help message to get help module\n\ni was created by @alvin_junior
 
-• *Uptime:* `{}`
-• `{}` *users, across* `{}` *chats.*
 """
 
 HELP_STRINGS = """
-*{} comes with:*
-*AI Chatbot*, *Anime*, *Music*, *Notes*, *Filters*, *NSFW* *and more!*
+*hello [{}](tg://user?id={})
+*welcome back to {} 
 
-🎛 *All commands can either be used with* `/` *or* `!`.
-🎛 *Reach out for support:* @KurisuSupport [.](https://telegra.ph/file/2291942331f135e3292ee.png)
+*All commands can either be used with* `/` *or* `!`.
 """.format(
     dispatcher.bot.first_name, ""
     if not ALLOW_EXCL else "\nAll commands can either be used with / or !.\n")
@@ -72,9 +69,7 @@ HELP_STRINGS = """
 KURISU_IMG = "https://telegra.ph/file/6152bf2f73ca8ea30772a.png"
 KURISUIMGSTART = "https://telegra.ph/file/bd01a439fefb53170b36f.gif"
 
-DONATE_STRING = """Heya, glad to hear you want to donate!
-You can donate to the original writer of the Base code, Paul
-There are two ways of supporting him; [PayPal](paypal.me/PaulSonOfLars), or [Monzo](monzo.me/paulnionvestergaardlarsen)."""
+DONATE_STRING = """huh?!."""
 
 IMPORTED = {}
 MIGRATEABLE = []
@@ -87,7 +82,7 @@ CHAT_SETTINGS = {}
 USER_SETTINGS = {}
 
 for module_name in ALL_MODULES:
-    imported_module = importlib.import_module("SaitamaRobot.modules." +
+    imported_module = importlib.import_module("AlvinJuniorBot.modules." +
                                               module_name)
     if not hasattr(imported_module, "__mod_name__"):
         imported_module.__mod_name__ = imported_module.__name__
@@ -195,29 +190,30 @@ def start(update: Update, context: CallbackContext):
                 reply_markup=InlineKeyboardMarkup(
                     [[
                         InlineKeyboardButton(
-                            text="➕ Add Kurisu To Your Group",
+                            text="➕ Add me To Your Group ➕",
                             url="t.me/{}?startgroup=true".format(
                                 context.bot.username))
                     ],
                      [
                          InlineKeyboardButton(
-                             text="⚙️ Support",
+                             text="📣 Support",
                              url=f"https://t.me/{SUPPORT_CHAT}"),
                          InlineKeyboardButton(
-                             text="🎉 Updates",
-                             url="https://t.me/steinsupdates"),
-                         InlineKeyboardButton(
-                             text="🗃 Guide",
-                             url="https://t.me/Steinsupdates/7"),
-              
+                             text="🔔 Updates",
+                             url="https://t.me/{UPDATES_CHANNEL}"),
                     ],
-                     [
-                        InlineKeyboardButton(
-                             text="Anime Chat",
-                             url="https://t.me/ias_chats"),                    
+                     [                    
                         InlineKeyboardButton(
                              text="Help & Commands",
-                             url="https://t.me/Kurisu_Makise_Robot?start=help"),      
+                             url="https://t.me/{BOT_USERNAME}?start=help"),
+                      InlineKeyboardButton(
+                             text="source code
+                             url="https://github.com/fahrial2310/AlvinJuniorBot),
+                        ],
+                        [
+                          InlineKeyboardButton(
+                              text="⚜️Creator🔰"
+                              url="https://t.me/alvin_junior),
                     ]]))
     else:
         update.effective_message.reply_video(
@@ -499,8 +495,7 @@ def donate(update: Update, context: CallbackContext):
 
         if OWNER_ID != 254318997 and DONATION_LINK:
             update.effective_message.reply_text(
-                "You can also donate to the person currently running me "
-                "[here]({})".format(DONATION_LINK),
+                " what?! "
                 parse_mode=ParseMode.MARKDOWN)
 
     else:
@@ -512,10 +507,10 @@ def donate(update: Update, context: CallbackContext):
                 disable_web_page_preview=True)
 
             update.effective_message.reply_text(
-                "I've PM'ed you about donating to my creator!")
+                "this bot not need donation link!")
         except Unauthorized:
             update.effective_message.reply_text(
-                "Contact me in PM first to get donation information.")
+                "this bot not need donation link.")
 
 
 def migrate_chats(update: Update, context: CallbackContext):
@@ -541,7 +536,7 @@ def main():
 
     if SUPPORT_CHAT is not None and isinstance(SUPPORT_CHAT, str):
         try:
-            dispatcher.bot.sendMessage(f"@{SUPPORT_CHAT}", "[I am now online!](https://telegra.ph/file/26aeb38f38eb8c819e423.mp4)", parse_mode=ParseMode.MARKDOWN)
+            dispatcher.bot.sendMessage(f"@{SUPPORT_CHAT}", "[I am now online!](hthttps://telegra.ph/file/4f456dd3772310babe6c5.mp4)", parse_mode=ParseMode.MARKDOWN)
         except Unauthorized:
             LOGGER.warning(
                 "Bot isnt able to send message to support_chat, go and check!")
@@ -585,7 +580,7 @@ def main():
             updater.bot.set_webhook(url=URL + TOKEN)
 
     else:
-        LOGGER.info("Kurisu Makise is deployed sucessfully...")
+        LOGGER.info("Alvin Junior Bot is deployed sucessfully...")
         updater.start_polling(timeout=15, read_latency=4, clean=True)
 
     if len(argv) not in (1, 3, 4):
