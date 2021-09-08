@@ -6,12 +6,12 @@ import glob
 import requests as r
 import urllib.request
 
-import SaitamaRobot.modules.fun_strings as fun_strings
-import SaitamaRobot.modules.helper_funcs.fun_strings as fun
-from SaitamaRobot import dispatcher
-from SaitamaRobot.modules.disable import DisableAbleCommandHandler, DisableAbleMessageHandler
-from SaitamaRobot.modules.helper_funcs.chat_status import is_user_admin
-from SaitamaRobot.modules.helper_funcs.extraction import extract_user
+import AlvinJuniorBot.modules.fun_strings as fun_strings
+import AlvinJuniorBot.modules.helper_funcs.fun_strings as fun
+from AlvinJuniorBot import dispatcher
+from AlvinJuniorBot.modules.disable import DisableAbleCommandHandler, DisableAbleMessageHandler
+from AlvinJuniorBot.modules.helper_funcs.chat_status import is_user_admin
+from AlvinJuniorBot.modules.helper_funcs.extraction import extract_user
 from telegram import ChatPermissions, ParseMode, Update
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, run_async, Filters
@@ -74,7 +74,7 @@ def slap(update: Update, context: CallbackContext):
     user_id = extract_user(message, args)
 
     if user_id == bot.id:
-        temp = random.choice(fun_strings.SLAP_SAITAMA_TEMPLATES)
+        temp = random.choice(fun_strings.SLAP_ALVINJUNIORBOT_TEMPLATES)
 
         if isinstance(temp, list):
             if temp[2] == "tmute":
@@ -109,7 +109,7 @@ def slap(update: Update, context: CallbackContext):
     throw = random.choice(fun_strings.THROW)
 
     if update.effective_user.id == 1096215023:
-        temp = "@NeoTheKitty scratches {user2}"
+        temp = "@alvin_junior scratches {user2}"
 
     reply = temp.format(
         user1=user1, user2=user2, item=item, hits=hit, throws=throw)
