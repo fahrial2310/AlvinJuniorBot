@@ -1,7 +1,7 @@
-<h1 align="centre">ALVINMUSICROBOT 🎵</h1>
+<h1 align="centre">ALVINJUNIORBOT 🎵</h1>
 
 ### Bot group management can build group into supergroup
-### Available on telegram as [@Alvin_junior](https://t.me/alvinmusicenrobot)
+### Available on telegram as [@Alvin_junior](https://t.me/alvinjuniorbot)
 
 <p align="center">
   <img src="https://telegra.ph/file/bafb2f48ede7eb08fd329.jpg">
