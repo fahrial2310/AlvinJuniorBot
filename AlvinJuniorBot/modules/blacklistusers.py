@@ -1,18 +1,18 @@
 # Module to blacklist users and prevent them from using commands by @TheRealPhoenix
 import html
-import SaitamaRobot.modules.sql.blacklistusers_sql as sql
-from SaitamaRobot import (DEV_USERS, OWNER_ID, DRAGONS, DEMONS, TIGERS, WOLVES,
+import AlvinjuniorBot.modules.sql.blacklistusers_sql as sql
+from AlvinjuniorBot import (DEV_USERS, OWNER_ID, SUDO_USERS , SUPPORT_USERS , TIGERS, WHITELIST_USERS ,
                           dispatcher)
-from SaitamaRobot.modules.helper_funcs.chat_status import dev_plus
-from SaitamaRobot.modules.helper_funcs.extraction import (extract_user,
+from AlvinjuniorBot.modules.helper_funcs.chat_status import dev_plus
+from AlvinjuniorBot.modules.helper_funcs.extraction import (extract_user,
                                                           extract_user_and_text)
-from SaitamaRobot.modules.log_channel import gloggable
+from AlvinjuniorBot.modules.log_channel import gloggable
 from telegram import ParseMode, Update
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, CommandHandler, run_async
 from telegram.utils.helpers import mention_html
 
-BLACKLISTWHITELIST = [OWNER_ID] + DEV_USERS + DRAGONS + WOLVES + DEMONS
+BLACKLISTWHITELIST = [OWNER_ID] + DEV_USERS + SUDO_USERS  + WHITELIST_USERS  + SUPPORT_USERS 
 BLABLEUSERS = [OWNER_ID] + DEV_USERS
 
 
@@ -137,7 +137,7 @@ def __user_info__(user_id):
         return ""
     if user_id == dispatcher.bot.id:
         return ""
-    if int(user_id) in DRAGONS + TIGERS + WOLVES:
+    if int(user_id) in SUDO_USERS  + TIGERS + WHITELIST_USERS :
         return ""
     if is_blacklisted:
         text = text.format("Yes")
