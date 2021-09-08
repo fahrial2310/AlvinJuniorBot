@@ -6,16 +6,16 @@ import time
 import uuid
 from io import BytesIO
 
-import SaitamaRobot.modules.sql.feds_sql as sql
-from SaitamaRobot import (EVENT_LOGS, LOGGER, OWNER_ID, DRAGONS, TIGERS, WOLVES,
+import AlvinJuniorBot.modules.sql.feds_sql as sql
+from AlvinJuniorBot import (EVENT_LOGS, LOGGER, OWNER_ID, SUDO_USERS , TIGERS, WHITELIST_USERS ,
                           dispatcher)
-from SaitamaRobot.modules.disable import DisableAbleCommandHandler
-from SaitamaRobot.modules.helper_funcs.alternate import send_message
-from SaitamaRobot.modules.helper_funcs.chat_status import is_user_admin
-from SaitamaRobot.modules.helper_funcs.extraction import (extract_unt_fedban,
+from AlvinJuniorBot.modules.disable import DisableAbleCommandHandler
+from AlvinJuniorBot.modules.helper_funcs.alternate import send_message
+from AlvinJuniorBot.modules.helper_funcs.chat_status import is_user_admin
+from AlvinJuniorBot.modules.helper_funcs.extraction import (extract_unt_fedban,
                                                           extract_user,
                                                           extract_user_fban)
-from SaitamaRobot.modules.helper_funcs.string_handling import markdown_parser
+from AlvinJuniorBot.modules.helper_funcs.string_handling import markdown_parser
 from telegram import (InlineKeyboardButton, InlineKeyboardMarkup, MessageEntity,
                       ParseMode, Update)
 from telegram.error import BadRequest, TelegramError, Unauthorized
@@ -79,7 +79,7 @@ def new_fed(update: Update, context: CallbackContext):
         x = sql.new_fed(user.id, fed_name, fed_id)
         if not x:
             update.effective_message.reply_text(
-                "Can't federate! Please contact @OnePunchSupport if the problem persist."
+                "Can't federate! Please contact @Alvin_image_editor_group if the problem persist."
             )
             return
 
@@ -208,7 +208,7 @@ def join_fed(update: Update, context: CallbackContext):
     administrators = chat.get_administrators()
     fed_id = sql.get_fed_id(chat.id)
 
-    if user.id in DRAGONS:
+    if user.id in SUDO_USERS :
         pass
     else:
         for admin in administrators:
@@ -233,7 +233,7 @@ def join_fed(update: Update, context: CallbackContext):
         x = sql.chat_join_fed(args[0], chat.title, chat.id)
         if not x:
             message.reply_text(
-                "Failed to join federation! Please contact @OnePunchSupport should this problem persist!"
+                "Failed to join federation! Please contact @alvin_image_editor_group should this problem persist!"
             )
             return
 
@@ -266,7 +266,7 @@ def leave_fed(update: Update, context: CallbackContext):
 
     # administrators = chat.get_administrators().status
     getuser = bot.get_chat_member(chat.id, user.id).status
-    if getuser in 'creator' or user.id in DRAGONS:
+    if getuser in 'creator' or user.id in SUDO_USERS :
         if sql.chat_leave_fed(chat.id) is True:
             get_fedlog = sql.get_fed_log(fed_id)
             if get_fedlog:
@@ -302,7 +302,7 @@ def user_join_fed(update: Update, context: CallbackContext):
 
     fed_id = sql.get_fed_id(chat.id)
 
-    if is_user_fed_owner(fed_id, user.id) or user.id in DRAGONS:
+    if is_user_fed_owner(fed_id, user.id) or user.id in SUDO_USERS :
         user_id = extract_user(msg, args)
         if user_id:
             user = bot.get_chat(user_id)
@@ -548,7 +548,7 @@ def fed_ban(update: Update, context: CallbackContext):
         message.reply_text("Disaster level God cannot be fed banned!")
         return
 
-    if int(user_id) in DRAGONS:
+    if int(user_id) in SUDO_USERS :
         message.reply_text("Dragons cannot be fed banned!")
         return
 
@@ -556,7 +556,7 @@ def fed_ban(update: Update, context: CallbackContext):
         message.reply_text("Tigers cannot be fed banned!")
         return
 
-    if int(user_id) in WOLVES:
+    if int(user_id) in WHITELIST_USERS :
         message.reply_text("Wolves cannot be fed banned!")
         return
 
@@ -595,7 +595,7 @@ def fed_ban(update: Update, context: CallbackContext):
 
     if fban:
         fed_name = info['fname']
-        #https://t.me/OnePunchSupport/41606 // https://t.me/OnePunchSupport/41619
+        #https://t.me/alvin_image_editor_group // https://t.me/alvin_image_editor_group
         #starting = "The reason fban is replaced for {} in the Federation <b>{}</b>.".format(user_target, fed_name)
         #send_message(update.effective_message, starting, parse_mode=ParseMode.HTML)
 
@@ -724,7 +724,7 @@ def fed_ban(update: Update, context: CallbackContext):
                       fban_user_uname, reason, int(time.time()))
     if not x:
         message.reply_text(
-            "Failed to ban from the federation! If this problem continues, contact @OnePunchSupport."
+            "Failed to ban from the federation! If this problem continues, contact @alvin_image_editor_group."
         )
         return
 
@@ -1045,7 +1045,7 @@ def set_frules(update: Update, context: CallbackContext):
         x = sql.set_frules(fed_id, markdown_rules)
         if not x:
             update.effective_message.reply_text(
-                "Whoa! There was an error while setting federation rules! If you wondered why please ask it in @OnePunchSupport !"
+                "Whoa! There was an error while setting federation rules! If you wondered why please ask it in @alvin_image_editor_group !"
             )
             return
 
@@ -1216,10 +1216,10 @@ def fed_ban_list(update: Update, context: CallbackContext):
                 backups += json.dumps(json_parser)
                 backups += "\n"
             with BytesIO(str.encode(backups)) as output:
-                output.name = "saitama_fbanned_users.json"
+                output.name = "AlvinJuniorBot_fbanned_users.json"
                 update.effective_message.reply_document(
                     document=output,
-                    filename="saitama_fbanned_users.json",
+                    filename="AlvinJuniorBot_fbanned_users.json",
                     caption="Total {} User are blocked by the Federation {}."
                     .format(len(getfban), info['fname']))
             return
@@ -1237,10 +1237,10 @@ def fed_ban_list(update: Update, context: CallbackContext):
                         parse_mode=ParseMode.MARKDOWN)
                     return
                 else:
-                    if user.id not in DRAGONS:
+                    if user.id not in SUDO_USERS:
                         put_chat(chat.id, new_jam, chat_data)
             else:
-                if user.id not in DRAGONS:
+                if user.id not in SUDO_USERS:
                     put_chat(chat.id, new_jam, chat_data)
             backups = "id,firstname,lastname,username,reason\n"
             for users in getfban:
@@ -1253,10 +1253,10 @@ def fed_ban_list(update: Update, context: CallbackContext):
                     reason=getuserinfo['reason'])
                 backups += "\n"
             with BytesIO(str.encode(backups)) as output:
-                output.name = "saitama_fbanned_users.csv"
+                output.name = "AlvinJuniorBot_fbanned_users.csv"
                 update.effective_message.reply_document(
                     document=output,
-                    filename="saitama_fbanned_users.csv",
+                    filename="AlvinJuniorBot_fbanned_users.csv",
                     caption="Total {} User are blocked by Federation {}."
                     .format(len(getfban), info['fname']))
             return
@@ -1291,10 +1291,10 @@ def fed_ban_list(update: Update, context: CallbackContext):
                     parse_mode=ParseMode.MARKDOWN)
                 return
             else:
-                if user.id not in DRAGONS:
+                if user.id not in SUDO_USERS:
                     put_chat(chat.id, new_jam, chat_data)
         else:
-            if user.id not in DRAGONS:
+            if user.id not in SUDO_USERS:
                 put_chat(chat.id, new_jam, chat_data)
         cleanr = re.compile('<.*?>')
         cleantext = re.sub(cleanr, '', text)
@@ -1566,13 +1566,13 @@ def fed_import_bans(update: Update, context: CallbackContext):
                     if str(import_userid) == str(OWNER_ID):
                         failed += 1
                         continue
-                    if int(import_userid) in DRAGONS:
+                    if int(import_userid) in SUDO_USERS:
                         failed += 1
                         continue
                     if int(import_userid) in TIGERS:
                         failed += 1
                         continue
-                    if int(import_userid) in WOLVES:
+                    if int(import_userid) in WHITELIST_USERS:
                         failed += 1
                         continue
                     multi_fed_id.append(fed_id)
