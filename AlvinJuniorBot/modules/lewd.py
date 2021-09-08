@@ -4,14 +4,14 @@ import nekos
 import requests
 from PIL import Image
 from telegram import ParseMode
-from SaitamaRobot import dispatcher, updater
-import SaitamaRobot.modules.sql.nsfw_sql as sql
-from SaitamaRobot.modules.log_channel import gloggable
+from AlvinJuniorBot import dispatcher, updater
+import AlvinJuniorBot.modules.sql.nsfw_sql as sql
+from AlvinJuniorBot.modules.log_channel import gloggable
 from telegram import Message, Chat, Update, Bot, MessageEntity
 from telegram.error import BadRequest, RetryAfter, Unauthorized
 from telegram.ext import CommandHandler, run_async, CallbackContext
-from SaitamaRobot.modules.helper_funcs.filters import CustomFilters
-from SaitamaRobot.modules.helper_funcs.chat_status import user_admin
+from AlvinJuniorBot.modules.helper_funcs.filters import CustomFilters
+from AlvinJuniorBot.modules.helper_funcs.chat_status import user_admin
 from telegram.utils.helpers import mention_html, mention_markdown, escape_markdown
 
 @run_async
@@ -818,9 +818,8 @@ __handlers__ = [
 ]
 
 __help__ = """
-Module credits: [Dank-del](https://github.com/Dank-del/Chizuru/) ,
-Also thanks to [EverythingSuckz](https://t.me/EverythingSuckz) for NSFW filter.
-    
+hmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+what?!
 Usage:
     
 /addnsfw : Enable NSFW mode
@@ -879,4 +878,4 @@ Commands :
  - /dva: Sends Random D.VA source Images.
 """
 
-__mod_name__ = "NSFW"
+__mod_name__ = "WHAT?!"
