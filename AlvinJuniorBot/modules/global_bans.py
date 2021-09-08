@@ -2,17 +2,17 @@ import html
 import time
 from datetime import datetime
 from io import BytesIO
-from SaitamaRobot.modules.sql.users_sql import get_user_com_chats
-import SaitamaRobot.modules.sql.global_bans_sql as sql
-from SaitamaRobot import (DEV_USERS, EVENT_LOGS, OWNER_ID, STRICT_GBAN, DRAGONS,
-                          SUPPORT_CHAT, SPAMWATCH_SUPPORT_CHAT, DEMONS, TIGERS,
-                          WOLVES, sw, dispatcher)
-from SaitamaRobot.modules.helper_funcs.chat_status import (is_user_admin,
+from AlvinJuniorBot.modules.sql.users_sql import get_user_com_chats
+import AlvinJuniorBot.modules.sql.global_bans_sql as sql
+from AlvinJuniorBot import (DEV_USERS, EVENT_LOGS, OWNER_ID, STRICT_GBAN, SUDO_USERS,
+                          SUPPORT_CHAT, SPAMWATCH_SUPPORT_CHAT, SUPPORT_USERS, TIGERS,
+                          WHITELIST_USERS, sw, dispatcher)
+from AlvinJuniorBot.modules.helper_funcs.chat_status import (is_user_admin,
                                                            support_plus,
                                                            user_admin)
-from SaitamaRobot.modules.helper_funcs.extraction import (extract_user,
+from AlvinJuniorBot.modules.helper_funcs.extraction import (extract_user,
                                                           extract_user_and_text)
-from SaitamaRobot.modules.helper_funcs.misc import send_to_list
+from AlvinJuniorBot.modules.helper_funcs.misc import send_to_list
 from telegram import ParseMode, Update
 from telegram.error import BadRequest, TelegramError
 from telegram.ext import (CallbackContext, CommandHandler, Filters,
@@ -73,23 +73,23 @@ def gban(update: Update, context: CallbackContext):
         )
         return
 
-    if int(user_id) in DRAGONS:
+    if int(user_id) in SUDO_USERS:
         message.reply_text(
             "I spy, with my little eye... a disaster! Why are you guys turning on each other?"
         )
         return
 
-    if int(user_id) in DEMONS:
+    if int(user_id) in SUPPORT_USERS :
         message.reply_text(
-            "OOOH someone's trying to gban a Demon Disaster! *grabs popcorn*")
+            "OOOH someone's trying to gban a support Disaster! *grabs popcorn*")
         return
 
     if int(user_id) in TIGERS:
         message.reply_text("That's a Tiger! They cannot be banned!")
         return
 
-    if int(user_id) in WOLVES:
-        message.reply_text("That's a Wolf! They cannot be banned!")
+    if int(user_id) in WHITELIST_USERS :
+        message.reply_text("That's a whitelist! They cannot be banned!")
         return
 
     if user_id == bot.id:
@@ -174,7 +174,7 @@ def gban(update: Update, context: CallbackContext):
                 "\n\nFormatting has been disabled due to an unexpected error.")
 
     else:
-        send_to_list(bot, DRAGONS + DEMONS, log_message, html=True)
+        send_to_list(bot, SUDO_USERS  + SUPPORT_USERS , log_message, html=True)
 
     sql.gban_user(user_id, user_chat.username or user_chat.first_name, reason)
 
@@ -203,7 +203,7 @@ def gban(update: Update, context: CallbackContext):
                         f"Could not gban due to {excp.message}",
                         parse_mode=ParseMode.HTML)
                 else:
-                    send_to_list(bot, DRAGONS + DEMONS,
+                    send_to_list(bot, SUDO_USERS  + SUPPORT_USERS ,
                                  f"Could not gban due to: {excp.message}")
                 sql.ungban_user(user_id)
                 return
@@ -218,7 +218,7 @@ def gban(update: Update, context: CallbackContext):
     else:
         send_to_list(
             bot,
-            DRAGONS + DEMONS,
+            SUDO_USERS  + SUPPORT_USERS ,
             f"Gban complete! (User banned in <code>{gbanned_chats}</code> chats)",
             html=True)
 
@@ -339,7 +339,7 @@ def ungban(update: Update, context: CallbackContext):
             log_message + f"\n<b>Chats affected:</b> {ungbanned_chats}",
             parse_mode=ParseMode.HTML)
     else:
-        send_to_list(bot, DRAGONS + DEMONS, "un-gban complete!")
+        send_to_list(bot, SUDO_USERS  + SUPPORT_USERS , "un-gban complete!")
 
     end_time = time.time()
     ungban_time = round((end_time - start_time), 2)
@@ -470,7 +470,7 @@ def __user_info__(user_id):
         return ""
     if user_id == dispatcher.bot.id:
         return ""
-    if int(user_id) in DRAGONS + TIGERS + WOLVES:
+    if int(user_id) in SUDO_USERS  + TIGERS + WHITELIST_USERS :
         return ""
     if is_gbanned:
         text = text.format("Yes")
