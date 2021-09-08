@@ -15,25 +15,25 @@ from telegram.ext import (
 )
 from telegram.utils.helpers import mention_html, escape_markdown
 
-from SaitamaRobot import dispatcher, LOGGER, DRAGONS
-from SaitamaRobot.modules.disable import DisableAbleCommandHandler
-from SaitamaRobot.modules.helper_funcs.handlers import MessageHandlerChecker
-from SaitamaRobot.modules.helper_funcs.chat_status import user_admin
-from SaitamaRobot.modules.helper_funcs.extraction import extract_text
-from SaitamaRobot.modules.helper_funcs.filters import CustomFilters
-from SaitamaRobot.modules.helper_funcs.misc import build_keyboard_parser
-from SaitamaRobot.modules.helper_funcs.msg_types import get_filter_type
-from SaitamaRobot.modules.helper_funcs.string_handling import (
+from AlvinJuniorBot import dispatcher, LOGGER, SUDO_USERS 
+from AlvinJuniorBot.modules.disable import DisableAbleCommandHandler
+from AlvinJuniorBot.modules.helper_funcs.handlers import MessageHandlerChecker
+from AlvinJuniorBot.modules.helper_funcs.chat_status import user_admin
+from AlvinJuniorBot.modules.helper_funcs.extraction import extract_text
+from AlvinJuniorBot.modules.helper_funcs.filters import CustomFilters
+from AlvinJuniorBot.modules.helper_funcs.misc import build_keyboard_parser
+from AlvinJuniorBot.modules.helper_funcs.msg_types import get_filter_type
+from AlvinJuniorBot.modules.helper_funcs.string_handling import (
     split_quotes,
     button_markdown_parser,
     escape_invalid_curly_brackets,
     markdown_to_html,
 )
-from SaitamaRobot.modules.sql import cust_filters_sql as sql
+from AlvinJuniorBot.modules.sql import cust_filters_sql as sql
 
-from SaitamaRobot.modules.connection import connected
+from AlvinJuniorBot.modules.connection import connected
 
-from SaitamaRobot.modules.helper_funcs.alternate import send_message, typing_action
+from AlvinJuniorBot.modules.helper_funcs.alternate import send_message, typing_action
 
 HANDLER_GROUP = 10
 
@@ -485,7 +485,7 @@ def rmall_filters(update, context):
     chat = update.effective_chat
     user = update.effective_user
     member = chat.get_member(user.id)
-    if member.status != "creator" and user.id not in DRAGONS:
+    if member.status != "creator" and user.id not in SUDO_USERS :
         update.effective_message.reply_text(
             "Only the chat owner can clear all notes at once.")
     else:
@@ -508,7 +508,7 @@ def rmall_callback(update, context):
     msg = update.effective_message
     member = chat.get_member(query.from_user.id)
     if query.data == 'filters_rmall':
-        if member.status == "creator" or query.from_user.id in DRAGONS:
+        if member.status == "creator" or query.from_user.id in SUDO_USERS :
             allfilters = sql.get_chat_triggers(chat.id)
             if not allfilters:
                 msg.edit_text("No filters in this chat, nothing to stop!")
@@ -531,7 +531,7 @@ def rmall_callback(update, context):
         if member.status == "member":
             query.answer("You need to be admin to do this.")
     elif query.data == 'filters_cancel':
-        if member.status == "creator" or query.from_user.id in DRAGONS:
+        if member.status == "creator" or query.from_user.id in SUDO_USERS :
             msg.edit_text("Clearing of all filters has been cancelled.")
             return
         if member.status == "administrator":
