@@ -5,10 +5,10 @@ from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton, Upda
 from telegram.error import BadRequest, Unauthorized
 from telegram.ext import CommandHandler, CallbackQueryHandler, run_async
 
-import SaitamaRobot.modules.sql.connection_sql as sql
-from SaitamaRobot import dispatcher, DRAGONS, DEV_USERS
-from SaitamaRobot.modules.helper_funcs import chat_status
-from SaitamaRobot.modules.helper_funcs.alternate import send_message, typing_action
+import AlvinJuniorBot.modules.sql.connection_sql as sql
+from AlvinJuniorBot import dispatcher, SUDO_USERS , DEV_USERS
+from AlvinJuniorBot.modules.helper_funcs import chat_status
+from AlvinJuniorBot.modules.helper_funcs.alternate import send_message, typing_action
 
 user_admin = chat_status.user_admin
 
@@ -147,7 +147,7 @@ def connect_chat(update, context):
             if gethistory:
                 buttons = [
                     InlineKeyboardButton(
-                        text="❎ Close button", callback_data="connect_close"),
+                        text="❎ Close ", callback_data="connect_close"),
                     InlineKeyboardButton(
                         text="🧹 Clear history", callback_data="connect_clear"),
                 ]
@@ -205,7 +205,7 @@ def connect_chat(update, context):
         isadmin = getstatusadmin.status in ("administrator", "creator")
         ismember = getstatusadmin.status in ("member")
         isallow = sql.allow_connect_to_chat(chat.id)
-        if (isadmin) or (isallow and ismember) or (user.id in DRAGONS):
+        if (isadmin) or (isallow and ismember) or (user.id in SUDO_USERS):
             connection_status = sql.connect(
                 update.effective_message.from_user.id, chat.id)
             if connection_status:
