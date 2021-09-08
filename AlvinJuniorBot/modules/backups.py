@@ -5,23 +5,23 @@ from telegram import ParseMode, Message
 from telegram.error import BadRequest
 from telegram.ext import CommandHandler, run_async
 
-import SaitamaRobot.modules.sql.notes_sql as sql
-from SaitamaRobot import dispatcher, LOGGER, OWNER_ID, JOIN_LOGGER
-from SaitamaRobot.__main__ import DATA_IMPORT
-from SaitamaRobot.modules.helper_funcs.chat_status import user_admin
-from SaitamaRobot.modules.helper_funcs.alternate import typing_action
+import AlvinJuniorBot.modules.sql.notes_sql as sql
+from AlvinJuniorBot import dispatcher, LOGGER, OWNER_ID, JOIN_LOGGER
+from AlvinJuniorBot.__main__ import DATA_IMPORT
+from AlvinJuniorBot.modules.helper_funcs.chat_status import user_admin
+from AlvinJuniorBot.modules.helper_funcs.alternate import typing_action
 
-# from SaitamaRobot.modules.rules import get_rules
-import SaitamaRobot.modules.sql.rules_sql as rulessql
+# from AlvinJuniorBot.modules.rules import get_rules
+import AlvinJuniorBot.modules.sql.rules_sql as rulessql
 
-# from SaitamaRobot.modules.sql import warns_sql as warnssql
-import SaitamaRobot.modules.sql.blacklist_sql as blacklistsql
-from SaitamaRobot.modules.sql import disable_sql as disabledsql
+# from AlvinJuniorBot.modules.sql import warns_sql as warnssql
+import AlvinJuniorBot.modules.sql.blacklist_sql as blacklistsql
+from AlvinJuniorBot.modules.sql import disable_sql as disabledsql
 
-# from SaitamaRobot.modules.sql import cust_filters_sql as filtersql
-# import SaitamaRobot.modules.sql.welcome_sql as welcsql
-import SaitamaRobot.modules.sql.locks_sql as locksql
-from SaitamaRobot.modules.connection import connected
+# from AlvinJuniorBot.modules.sql import cust_filters_sql as filtersql
+# import AlvinJuniorBot.modules.sql.welcome_sql as welcsql
+import AlvinJuniorBot.modules.sql.locks_sql as locksql
+from AlvinJuniorBot.modules.connection import connected
 
 
 @run_async
@@ -334,14 +334,14 @@ def export_data(update, context):
         pass
     context.bot.sendDocument(
         current_chat_id,
-        document=open("SaitamaRobot{}.backup".format(chat_id), "rb"),
-        caption="*Successfully Exported backup:*\nChat: `{}`\nChat ID: `{}`\nOn: `{}`\n\nNote: This `SaitamaRobot-Backup` was specially made for notes."
+        document=open("AlvinJuniorBot{}.backup".format(chat_id), "rb"),
+        caption="*Successfully Exported backup:*\nChat: `{}`\nChat ID: `{}`\nOn: `{}`\n\nNote: This `AlvinJuniorBot-Backup` was specially made for notes."
         .format(chat.title, chat_id, tgl),
         timeout=360,
         reply_to_message_id=msg.message_id,
         parse_mode=ParseMode.MARKDOWN,
     )
-    os.remove("SaitamaRobot{}.backup".format(chat_id))  # Cleaning file
+    os.remove("AlvinJuniorBot{}.backup".format(chat_id))  # Cleaning file
 
 
 # Temporary data
